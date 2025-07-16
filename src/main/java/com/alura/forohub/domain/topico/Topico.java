@@ -35,7 +35,7 @@ public class Topico {
         this.id = null ;
         this.titulo = datosRegistroTopico.titulo();
         this.mensaje = datosRegistroTopico.mensaje();
-        this.fecha = datosRegistroTopico.fecha();
+        this.fecha = LocalDate.parse(datosRegistroTopico.fecha());
         this.status = datosRegistroTopico.status();
         this.idUsuario= datosRegistroTopico.idUsuario();
         this.curso = datosRegistroTopico.curso();
