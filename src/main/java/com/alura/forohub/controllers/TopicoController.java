@@ -1,6 +1,9 @@
 package com.alura.forohub.controllers;
 
 import com.alura.forohub.domain.topico.DatosRegistroTopico;
+import com.alura.forohub.domain.topico.Topico;
+import com.alura.forohub.domain.topico.TopicoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,12 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/topicos")
 public class TopicoController {
 
+    // Instanciar para poder guardar en
+    @Autowired
+    private TopicoRepository topicoRepository;
 
-    // No olvidar @Transactional cuando se integre MySQL Driver
-    // No olvidar que este método ya NO será String, será void
+    @Transactional
     @PostMapping
-    public String registrarTopico(@RequestBody DatosRegistroTopico datosRegistroTopico){
-        return "Todo Correcto con el Registro";
+    public void registrarTopico(@RequestBody DatosRegistroTopico datosRegistroTopico){
+        topicoRepository.save(new Topico(datosRegistroTopico));     //Registrar en la DB
     }
 
     @GetMapping

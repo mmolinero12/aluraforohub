@@ -7,7 +7,8 @@ Esto es un DTO - Data Transfer Object, el cual permite encapsular los datos que 
 import java.time.LocalDate;
 
 public record DatosRegistroTopico(
-        // Los siguientes nombres de variables deben coincidir con las "Keys" en el Json que se recibe
+        // Los siguientes nombres de variables deben coincidir con las "Keys"
+        // del Json que se recibe
         String titulo,
         String mensaje,
         LocalDate fecha,
