@@ -5,7 +5,6 @@ create table topicos(
     fecha date not null,
     status varchar(10) not null,
     id_usuario bigint not null,
-    curso varchar(100) not null,
 
     primary key(id_topico)
 
