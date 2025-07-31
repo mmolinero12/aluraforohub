@@ -7,5 +7,4 @@ create table topicos(
     id_usuario bigint not null,
 
     primary key(id_topico)
-
 );

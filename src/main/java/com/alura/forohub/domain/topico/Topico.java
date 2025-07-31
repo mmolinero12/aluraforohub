@@ -1,5 +1,6 @@
 package com.alura.forohub.domain.topico;
 
+import com.alura.forohub.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -36,12 +37,13 @@ public class Topico {
     public Topico(DatosRegistroTopico datosRegistroTopico) {
         this.id_topico = null ;
         this.titulo = datosRegistroTopico.titulo();
-        this.mensaje = datosRegistroTopico.mensaje();
+        this.mensaje = datosRegistroTopico.mensaje() ;
         this.fecha = LocalDate.parse(datosRegistroTopico.fecha());
         this.status = datosRegistroTopico.status();
         this.id_usuario = datosRegistroTopico.idUsuario();
         this.curso = datosRegistroTopico.curso();
     }
+
 
     public void actualizarInformaciones(@Valid DatosActualizacionTopico datosActualizacionTopico) {
         // Las siguientes líneas de código verifican que datos llegaron para su actualización
@@ -55,4 +57,5 @@ public class Topico {
             this.status = datosActualizacionTopico.status();
         }
     }
+
 }
