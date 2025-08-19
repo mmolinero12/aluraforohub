@@ -6,6 +6,7 @@ import com.alura.forohub.domain.respuesta.evaluacion.DatosRegistroRespuestaEvalu
 import com.alura.forohub.domain.respuesta.evaluacion.RespuestaEvaluacionRepository;
 import com.alura.forohub.domain.respuesta.evaluacion.*;
 import com.alura.forohub.domain.usuario.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/respuestaevaluaciones")
+@SecurityRequirement(name = "bearer-key")   // Para usarse con Swagger
 public class RespuestaEvaluacionController {
 
     @Autowired

@@ -4,6 +4,7 @@ import com.alura.forohub.domain.ValidacionException;
 import com.alura.forohub.domain.topico.*;
 import com.alura.forohub.domain.topico.evaluacion.*;
 import com.alura.forohub.domain.usuario.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/topicoevaluaciones")
+@SecurityRequirement(name = "bearer-key") // Para usarse con Swagger
 public class TopicoEvaluacionController {
 
     @Autowired

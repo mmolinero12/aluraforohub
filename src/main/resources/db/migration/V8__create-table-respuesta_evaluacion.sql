@@ -1,7 +1,7 @@
 -- Se creó esta tabla al final ya que depende de la primera tabla "usuarios" y
 -- de la tabla "respuestas"
 
-CREATE TABLE respuesta_evaluacion(
+CREATE TABLE respuesta_evaluaciones(
     id BIGINT NOT NULL AUTO_INCREMENT,
     tipo_evaluacion VARCHAR(11) NOT NULL,
     usuario_id BIGINT NOT NULL,

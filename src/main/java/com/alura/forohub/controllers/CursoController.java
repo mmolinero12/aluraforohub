@@ -9,6 +9,7 @@ import com.alura.forohub.domain.curso.CursoRepository;
 import com.alura.forohub.domain.curso.DatosDetalleCurso;
 import com.alura.forohub.domain.curso.DatosRegistroCurso;
 import com.alura.forohub.domain.usuario.DatosDetalleUsuario;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/cursos")
+@SecurityRequirement(name = "bearer-key")  // Para usarse con Swagger
 public class CursoController {
 
     // Instanciar para poder guardar en

@@ -54,14 +54,11 @@ public class Usuario implements UserDetails {
     // Static helper method to create a password encoder
     private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-
     /**
      * Método Constructor de la Clase Usuario
      * @param datos
      */
     public Usuario(DatosRegistroUsuario datos) {
-
-        String passwordEncriptada = passwordEncoder.encode(datos.password());
 
         this.id = null;
         this.activo = true;
@@ -74,8 +71,12 @@ public class Usuario implements UserDetails {
         this.email = datos.email();
         this.telefono = datos.telefono();
         this.username = datos.username();
-        this.password = passwordEncriptada;
+        this.password = datos.password();
         this.perfil = datos.perfil();
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**
@@ -115,7 +116,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE:USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override

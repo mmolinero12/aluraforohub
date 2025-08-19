@@ -2,6 +2,8 @@ package com.alura.forohub.domain.topico;
 
 import com.alura.forohub.domain.curso.Curso;
 import com.alura.forohub.domain.respuesta.DatosActualizacionRespuesta;
+import com.alura.forohub.domain.respuesta.Respuesta;
+import com.alura.forohub.domain.topico.evaluacion.TopicoEvaluacion;
 import com.alura.forohub.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -11,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Clase Topico: Es la entidad JPA que se comunicará con la DB
@@ -48,6 +51,27 @@ public class Topico {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso_id")
     private Curso curso;
+
+    // Nueva relacion para respuestas con eliminacion en cascada - Se debe escribir el Método Constructor sin usar
+    // Lombok ya que el Constructor de Lombok lo incluiría. Así lo descartaríamos al momento de guardar en la tabla
+    // pero se conserva la relación en cascada
+    @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Respuesta> respuestas;
+
+    // Nueva relacion para evaluaciones de topicos con eliminacion en cascada
+    @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TopicoEvaluacion> topicoEvaluaciones;
+
+    public Topico( Long id, String titulo, String mensaje, LocalDate fechaCreacion,
+                   LocalDate fechaUltimaActualizacion, Status status, Usuario usuario, Curso curso) {
+        this.titulo = titulo;
+        this.mensaje = mensaje;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaUltimaActualizacion = fechaUltimaActualizacion;
+        this.status = status;
+        this.usuario = usuario;
+        this.curso = curso;
+    }
 
     /**
      * Método de actualización de la información de un topico

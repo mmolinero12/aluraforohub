@@ -1,9 +1,6 @@
 -- Se creó esta tabla casi al final ya que depende de la primera tabla "usuarios" y
 -- de la segunda "topicos"
 
--- Se prefirió el campo <datetime> ya que la creación de un tópico y
--- una respuesta se pueden dar el mismo día
-
 -- Se requieren dos campos de fecha, uno para la fecha de creación de la respuesta
 -- y una fecha de la última actualización de la respuesta por parte del usuario que la creó.
 

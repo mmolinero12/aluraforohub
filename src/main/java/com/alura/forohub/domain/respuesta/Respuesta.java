@@ -1,6 +1,8 @@
 package com.alura.forohub.domain.respuesta;
 
+import com.alura.forohub.domain.respuesta.evaluacion.RespuestaEvaluacion;
 import com.alura.forohub.domain.topico.Topico;
+import com.alura.forohub.domain.topico.evaluacion.TopicoEvaluacion;
 import com.alura.forohub.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -10,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Clase Respuesta: Es la entidad JPA que se comunicará con la DB
@@ -46,6 +49,23 @@ public class Respuesta {
     private LocalDate fechaCreacion;
     private LocalDate fechaUltimaActualizacion;
     private Boolean solucion;
+
+    // Nueva relacion para respuestas con eliminacion en cascada - Se debe escribir el Método Constructor sin usar
+    // Lombok ya que el Constructor de Lombok lo incluiría. Así lo descartaríamos al momento de guardar en la tabla
+    // pero se conserva la relación en cascada
+    @OneToMany(mappedBy = "respuesta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RespuestaEvaluacion> respuestaEvaluaciones;
+
+    public Respuesta(Long id, String mensaje, Usuario usuario, Topico topico, LocalDate fechaCreacion,
+                     LocalDate fechaUltimaActualizacion, Boolean solucion) {
+        this.id = id;
+        this.mensaje = mensaje;
+        this.usuario = usuario;
+        this.topico = topico;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaUltimaActualizacion = fechaUltimaActualizacion;
+        this.solucion = solucion;
+    }
 
     /**
      * Método de actualización de la información de una respuesta

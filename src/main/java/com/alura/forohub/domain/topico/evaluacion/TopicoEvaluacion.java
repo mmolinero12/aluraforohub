@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
  * los nombres de las columnas de la tabla topico_likes_dislikes pero en formato Camel Case.
  *
  */
-@Table(name = "topico_evaluacion")
+@Table(name = "topico_evaluaciones")
 @Entity(name = "TopicoEvaluacion")
 @Getter                         // Crea de forma automática todos los Getters
 @NoArgsConstructor              // Método Constructor que ayuda a instanciar sin argumentos - Esto es un prerrequisito

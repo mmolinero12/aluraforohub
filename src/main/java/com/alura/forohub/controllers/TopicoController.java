@@ -5,6 +5,7 @@ import com.alura.forohub.domain.curso.Categoria;
 import com.alura.forohub.domain.curso.CursoRepository;
 import com.alura.forohub.domain.topico.*;
 import com.alura.forohub.domain.usuario.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Null;
@@ -27,6 +28,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/topicos")
+@SecurityRequirement(name = "bearer-key") // Para usarse con Swagger
 public class TopicoController {
 
     @Autowired
@@ -144,6 +146,7 @@ public class TopicoController {
     // ******************* ACTUALIZAR UN TÓPICO *******************
     @Transactional
     @PutMapping
+    @PreAuthorize("hasAuthority('ROLE_USER') and @topicoSecurity.isOwner(#id)")     //Validación para que el creador elimine el registro
     public ResponseEntity actualizarTopico(
             @RequestBody @Valid DatosActualizacionTopico datosActualizacionTopico){
 
@@ -162,6 +165,7 @@ public class TopicoController {
     // ******************* ELIMINAR UN TÓPICO *******************
     @Transactional
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') and @topicoSecurity.isOwner(#id)")     //Validación para que el creador elimine el registro
     public ResponseEntity eliminarTopico(@PathVariable Long id){
         topicoRepository.deleteById(id);
         return ResponseEntity.noContent().build();  // retorna la respuesta:  204 No Content

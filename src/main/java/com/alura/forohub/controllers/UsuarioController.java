@@ -1,11 +1,11 @@
 package com.alura.forohub.controllers;
 
-
 /*
     Este Controller recibe requests de la aplicación Cliente.
  */
 
 import com.alura.forohub.domain.usuario.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +13,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/usuarios")
+@SecurityRequirement(name = "bearer-key") // Para usarse con Swagger
 public class UsuarioController {
 
-    // Instanciar para poder guardar en
+    // Instanciar para poder guardar en la tabla usuarios
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    // Inyectamos el PasswordEncoder que definimos en SecurityConfigurations
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // ******************* REGISTRO DE UN NUEVO USUARIO *******************
     @Transactional
@@ -35,6 +40,11 @@ public class UsuarioController {
         // Se va a devolver el Código 201, Body del registro que se insertó y un Header Location
 
         var usuario = new Usuario(datosRegistroUsuario);
+
+        // Codificamos la contraseña antes de guardarla
+        String hashedPassword = passwordEncoder.encode(datosRegistroUsuario.password());
+        usuario.setPassword(hashedPassword);
+
         usuarioRepository.save(usuario);     //Registrar en la DB. con .save(), automáticamente topico contiene su id_usuario
 
         var uri = uriComponentsBuilder
