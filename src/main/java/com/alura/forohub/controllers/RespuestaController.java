@@ -1,5 +1,6 @@
 package com.alura.forohub.controllers;
 
+import com.alura.forohub.domain.ValidacionException;
 import com.alura.forohub.domain.respuesta.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -19,43 +20,52 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/respuestas")
 public class RespuestaController {
 
-    // Instanciar para poder guardar en
+    @Autowired
+    private RegistroDeRespuestas registroDeRespuestas;
+
     @Autowired
     private RespuestaRepository respuestaRepository;
 
+    // ******************* REGISTRAR UNA NUEVA RESPUESTA *******************
     @Transactional
     @PostMapping
     public ResponseEntity registrarRespuesta(
-            @RequestBody @Valid DatosRegistroRespuesta datosRegistroRespuesta,
-            UriComponentsBuilder uriComponentsBuilder){
+            @RequestBody @Valid DatosRegistroRespuesta datosRegistroRespuesta){
 
-        // Se va a devolver el Código 201, Body del registro que se insertó y un Header Location
+        var detalleRespuesta = registroDeRespuestas.registrar(datosRegistroRespuesta);
 
-        var respuesta = new Respuesta(datosRegistroRespuesta);
-        respuestaRepository.save(respuesta); //Registrar en la DB. con .save(), automáticamente respuesta contiene su id_respuesta
-
-        var uri = uriComponentsBuilder.path("/respuestas/{id}").buildAndExpand(respuesta.getId_respuesta()).toUri();
-
-        return ResponseEntity.created(uri).body(new DatosDetalleRespuesta(respuesta));
+        return ResponseEntity.ok(detalleRespuesta);
     }
 
+    // ******************* LISTAR RESPUESTAS *******************
     @GetMapping
-    public ResponseEntity<Page<DatosListaRespuesta>> listarRespuestas(@PageableDefault(size = 2, sort={"mensaje"}) Pageable paginacion){
+    public ResponseEntity<Page<DatosListaRespuesta>> listarRespuestas(
+            @PageableDefault(size = 2, sort={"mensaje"}) Pageable paginacion){
         var page = respuestaRepository
                 .findAll(paginacion) //Con paginacion, nos devuelve un Page
                 .map(DatosListaRespuesta::new);
         return ResponseEntity.ok(page);
     }
 
+    // ******************* ACTUALIZAR UNA RESPUESTA *******************
     @Transactional
     @PutMapping
-    public ResponseEntity actualizarRespuesta(@RequestBody @Valid DatosActualizacionRespuesta datosActualizacionRespuesta){
-        var respuesta = respuestaRepository.getReferenceById(datosActualizacionRespuesta.id_respuesta());
-        respuesta.actualizarInformaciones(datosActualizacionRespuesta);
+    public ResponseEntity actualizarRespuesta(
+            @RequestBody @Valid DatosActualizacionRespuesta datos){
+
+        if(!respuestaRepository.existsById(datos.answerId())){
+            throw new ValidacionException("No existe una respuesta con el id proporcionado");
+        }
+
+        var respuesta = respuestaRepository.getReferenceById(datos.answerId());
+        // Segunda opción
+        // var respuesta = respuestaRepository.findById(datosActualizacionRespuesta.answerId()).get();
+        respuesta.actualizarInformaciones(datos);
 
         return ResponseEntity.ok(new DatosDetalleRespuesta(respuesta));
     }
 
+    // ******************* ELIMINAR UNA RESPUESTA *******************
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity eliminarRespuesta(@PathVariable Long id){
@@ -63,6 +73,7 @@ public class RespuestaController {
         return ResponseEntity.noContent().build();
     }
 
+    // ******************* LISTAR UNA ÚNICA RESPUESTA *******************
     @GetMapping("/{id}")
     public ResponseEntity<DatosListaRespuesta> listarUnicaRespuesta(@PathVariable Long id){
         var consulta = new DatosListaRespuesta(respuestaRepository.getReferenceById(id));

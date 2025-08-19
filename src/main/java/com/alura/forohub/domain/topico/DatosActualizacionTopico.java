@@ -1,18 +1,18 @@
 package com.alura.forohub.domain.topico;
 
-/*
-Esto es un DTO - Data Transfer Object, el cual permite encapsular los datos que recibimos y enviamos
- */
-
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
+/**
+ * Esto es un DTO - Data Transfer Object para la actualización de un tópico,
+ * el cual permite encapsular los datos que se reciben desde el navegador o la aplicación cliente.
+ * IMPORTANTE: Los siguientes nombres de variables deben coincidir con las "Keys" del Json que se recibe
+ * @param topicId
+ * @param titulo
+ * @param mensaje
+ * @param status
+ */
 public record DatosActualizacionTopico(
-        // Los siguientes nombres de variables deben coincidir con las "Keys"
-        // del Json que se recibe
-        // @NotBlank es específico de String
-        @NotNull Long id_topico,
+        @NotNull Long topicId,
         String titulo,
         String mensaje,
         Status status

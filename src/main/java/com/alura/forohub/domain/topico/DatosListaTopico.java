@@ -1,24 +1,55 @@
 package com.alura.forohub.domain.topico;
 
+import com.alura.forohub.domain.curso.Categoria;
+
+import java.time.LocalDate;
+
+/**
+ * Este Record proporciona los datos que serán solicitados por los GET Listar Topicos y
+ * Listar Topico.
+ *
+ * IMPORTANTE: Los nombres de las variables corresponden a las etiquetas
+ * de los encabezados de las columnas en la tabla topicos adoptando el
+ * formato camelCase.
+ *
+ * @param topicId
+ * @param titulo
+ * @param mensaje
+ * @param status
+ * @param username
+ * @param cursoName
+ * @param categoria
+ * @param fechaCreacion
+ * @param fechaUltimaActualizacion
+ */
 public record DatosListaTopico(
-        Long id_topico,
+        Long topicId,
         String titulo,
         String mensaje,
-        String fecha,
         Status status,
-        Long id_usuario,
-        Curso curso
+        String username,
+        String cursoName,
+        Categoria categoria,
+        LocalDate fechaCreacion,
+        LocalDate fechaUltimaActualizacion
 ) {
+
+    /**
+     * Método Constructor del Record
+     * @param topico
+     */
     public DatosListaTopico(Topico topico) {
 
         this(
-                topico.getId_topico(),
+                topico.getId(),
                 topico.getTitulo(),
                 topico.getMensaje(),
-                String.valueOf(topico.getFecha()),
                 topico.getStatus(),
-                topico.getId_usuario(),
-                topico.getCurso()
+                topico.getUsuario().getUsername(),
+                topico.getCurso().getNombre(),
+                topico.getCurso().getCategoria(),
+                topico.getFechaCreacion(),
+                topico.getFechaUltimaActualizacion()
         );
     }
 }

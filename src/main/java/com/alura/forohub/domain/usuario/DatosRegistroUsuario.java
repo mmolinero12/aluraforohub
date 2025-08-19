@@ -1,12 +1,11 @@
 package com.alura.forohub.domain.usuario;
 
 /*
-Esto es un DTO - Data Transfer Object, el cual permite encapsular los datos que recibimos y enviamos
+Esto es un DTO - Data Transfer Object para el registro de un nuevo usuario,
+el cual permite encapsular los datos que se reciben desde el navegador o la aplicación cliente.
  */
 
 import com.alura.forohub.domain.direccion.DatosDireccion;
-import com.alura.forohub.domain.topico.Curso;
-import com.alura.forohub.domain.topico.Status;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,15 +13,15 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record DatosRegistroUsuario(
-        // Los siguientes nombres de variables deben coincidir con las "Keys"
+        // Los siguiente nombres de variables deben coincidir con las "Keys"
         // del Json que se recibe
         // @NotBlank es específico de String
-        @NotBlank (message = "Nombre es obligatorio") String nombre,
-        @NotBlank (message = "Apellido Paterno es obligatorio") String apellido_paterno,
-        @NotBlank (message = "Apellido Materno es obligatorio") String apellido_materno,
+        @NotBlank (message = "Nombre del Usuario es obligatorio") String nombre,
+        @NotBlank (message = "Apellido Paterno es obligatorio") String apellidoPaterno,
+        @NotBlank (message = "Apellido Materno es obligatorio") String apellidoMaterno,
         @NotNull (message = "Fecha de Nacimiento es obligatoria")
         @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
-        String fecha_nacimiento,
+        String fechaNacimiento,
         String genero,
         @NotNull(message = "Dirección es obligatoria") @Valid DatosDireccion direccion,
 

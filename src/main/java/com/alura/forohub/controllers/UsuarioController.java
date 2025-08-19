@@ -5,8 +5,6 @@ package com.alura.forohub.controllers;
     Este Controller recibe requests de la aplicación Cliente.
  */
 
-import com.alura.forohub.domain.topico.DatosActualizacionTopico;
-import com.alura.forohub.domain.topico.DatosListaTopico;
 import com.alura.forohub.domain.usuario.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -14,19 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/usuarios")
-public class UserController {
+public class UsuarioController {
 
     // Instanciar para poder guardar en
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+
+    // ******************* REGISTRO DE UN NUEVO USUARIO *******************
     @Transactional
     @PostMapping
     public ResponseEntity registrarUsuario(
@@ -40,27 +39,32 @@ public class UserController {
 
         var uri = uriComponentsBuilder
                 .path("/usuarios/{id}")
-                .buildAndExpand(usuario.getId_usuario())
+                .buildAndExpand(usuario.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(new DatosDetalleUsuario(usuario));
     }
 
+
+    // ******************* LISTAR USUARIOS *******************
     @GetMapping
-    public ResponseEntity<Page<DatosListaFullUsuario>> listarUsuarios(@PageableDefault(size = 2, sort={"username"}) Pageable paginacion){
+    public ResponseEntity<Page<DatosListaUsuario>> listarUsuarios(@PageableDefault(size = 2, sort={"username"}) Pageable paginacion){
         var page = usuarioRepository
                 .findAll(paginacion) //Con paginacion, nos devuelve un Page
-                .map(DatosListaFullUsuario::new);
+                .map(DatosListaUsuario::new);
         return ResponseEntity.ok(page);
     }
 
+    // ******************* ACTUALIZAR UN USUARIO *******************
     @Transactional
     @PutMapping
     public ResponseEntity actualizarUsuario(@RequestBody @Valid DatosActualizacionUsuario datosActualizacionUsuario){
-        var usuario = usuarioRepository.getReferenceById(datosActualizacionUsuario.id_usuario());
+        var usuario = usuarioRepository.getReferenceById(datosActualizacionUsuario.userId()); // PROBLEMA
         usuario.actualizarInformaciones(datosActualizacionUsuario);
         return ResponseEntity.ok(new DatosDetalleUsuario(usuario));
     }
 
+
+    // ******************* ELIMINAR UN USUARIO *******************
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity eliminarUsuario(@PathVariable Long id){
@@ -69,9 +73,10 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    // ******************* LISTAR UN ÚNICO USUARIO *******************
     @GetMapping("/{id}")
-    public ResponseEntity<DatosListaFullUsuario> listarUnicoUsuario(@PathVariable Long id){
-        var consulta = new DatosListaFullUsuario(usuarioRepository.getReferenceById(id));
+    public ResponseEntity<DatosListaUsuario> listarUnicoUsuario(@PathVariable Long id){
+        var consulta = new DatosListaUsuario(usuarioRepository.getReferenceById(id));
         return ResponseEntity.ok(consulta);
     }
 

@@ -1,11 +1,7 @@
 package com.alura.forohub.domain.respuesta;
 
-
-// Esta Clase Topico es en realidad la entidad JPA que se comunicará con la DB
-// @Getter, @NoArgsConstructor, @AllArgsConstructor, @EqualsAndHashCode pertenecen a Lombok
-
-import com.alura.forohub.domain.topico.DatosActualizacionTopico;
-import com.alura.forohub.domain.topico.DatosRegistroTopico;
+import com.alura.forohub.domain.topico.Topico;
+import com.alura.forohub.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -15,40 +11,53 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * Clase Respuesta: Es la entidad JPA que se comunicará con la DB
+ *
+ * @Getter, @NoArgsConstructor, @AllArgsConstructor, @EqualsAndHashCode pertenecen a Lombok
+ *
+ * IMPORTANTE: Los nombres de los atributos de la Clase Respuesta deben coincidir con
+ * los nombres de las columnas de la tabla respuestas pero en formato Camel Case.
+ *
+ *  Se prefirió el que el servidor estableciera la fecha y hora actual y NO la aplicación cliente
+ *  Se requieren dos variables de fecha, una para la fecha de creación y otra para la fecha de la última actualización
+ *
+ */
 @Table(name = "respuestas")
 @Entity(name = "Respuesta")
 @Getter                         // Crea de forma automática todos los Getters
-@NoArgsConstructor              // Método Constructor que ayuda a instanciar sin argumentos
+@NoArgsConstructor              // Método Constructor que ayuda a instanciar sin argumentos - Esto es un prerrequisito
 @AllArgsConstructor             // Método Constructor que ayuda a instanciar con todos los atributos
-@EqualsAndHashCode(of = "id_respuesta")   // Dos objetos de la misma clase son iguales a través del "id"
+@EqualsAndHashCode(of = "id")   // Dos objetos de la misma clase son iguales a través del campo "id" de la tabla respuestas
 public class Respuesta {
-    // Los nombres de los atributos de la Clase Respuesta deben coincidir con
-    // los nombres de las columnas de la tabla respuestas
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_respuesta;
+    private Long id;
     private String mensaje;
-    private LocalDate fecha;
-    private Long id_usuario;
-    private Long id_topico;
 
-    public Respuesta(DatosRegistroRespuesta datosRegistroRespuesta) {
-        this.id_respuesta = null ;
-        this.mensaje = datosRegistroRespuesta.mensaje();
-        this.fecha = LocalDate.parse(datosRegistroRespuesta.fecha());
-        this.id_usuario = datosRegistroRespuesta.idUsuario();
-        this.id_topico = datosRegistroRespuesta.idTopico();
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creador_id")
+    private Usuario usuario;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "topico_id")
+    private Topico topico;
+
+    private LocalDate fechaCreacion;
+    private LocalDate fechaUltimaActualizacion;
+    private Boolean solucion;
+
+    /**
+     * Método de actualización de la información de una respuesta
+     * @param datosActualizacionRespuesta
+     */
     public void actualizarInformaciones(@Valid DatosActualizacionRespuesta datosActualizacionRespuesta) {
         // Las siguientes líneas de código verifican que datos llegaron para su actualización
 
         if(datosActualizacionRespuesta.mensaje() != null){
-            this.mensaje = datosActualizacionRespuesta.mensaje();
-        }
+            mensaje = datosActualizacionRespuesta.mensaje();
+            fechaUltimaActualizacion = LocalDate.now();
 
-        if(datosActualizacionRespuesta.fecha() != null){
-            this.fecha = LocalDate.parse(datosActualizacionRespuesta.fecha());
         }
 
     }

@@ -1,19 +1,43 @@
 package com.alura.forohub.domain.respuesta;
 
+import java.time.LocalDate;
+
+/**
+ * Este Record proporciona los datos que serán solicitados por los GET Listar Respuestas y
+ * Listar Respuesta.
+ *
+ * IMPORTANTE: Los nombres de las variables corresponden a las etiquetas
+ * de los encabezados de las columnas en la tabla respuestas adoptando el
+ * formato camelCase.
+ *
+ * @param answerId
+ * @param mensaje
+ * @param username
+ * @param topicName
+ * @param fechaCreacion
+ * @param fechaUltimaActualizacion
+ */
 public record DatosListaRespuesta(
-        Long id_respuesta,
+        Long answerId,
         String mensaje,
-        String fecha,
-        Long id_usuario,
-        Long id_topico
+        String username,
+        String topicName,
+        LocalDate fechaCreacion,
+        LocalDate fechaUltimaActualizacion
 ) {
+
+    /**
+     * Método Constructor del Record
+     * @param respuesta
+     */
     public DatosListaRespuesta(Respuesta respuesta) {
         this(
-                respuesta.getId_respuesta(),
+                respuesta.getId(),
                 respuesta.getMensaje(),
-                String.valueOf(respuesta.getFecha()),
-                respuesta.getId_usuario(),
-                respuesta.getId_topico()
+                respuesta.getUsuario().getUsername(),
+                respuesta.getTopico().getTitulo(),
+                respuesta.getFechaCreacion(),
+                respuesta.getFechaUltimaActualizacion()
         );
     }
 }

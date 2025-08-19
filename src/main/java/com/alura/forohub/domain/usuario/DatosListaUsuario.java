@@ -4,13 +4,14 @@ import com.alura.forohub.domain.direccion.Direccion;
 
 import java.time.LocalDate;
 
+
 /**
- * Este Record proporciona los datos que serán utilizados como comprobante
- * al dar de alta un usuario. Se omite password por obvias razones.
+ * Este Record proporciona los datos que serán solicitados por los GET Listar Usuarios y
+ * Listar Usuario. Se omite password por obvias razones.
  *
- * IMPORTANTE: Los nombres de las variables deben corresponder a las etiquetas
- * de los encabezados de las columnas en la tabla usuarios y deben adoptar el
- * formato camelCase. El Primary Id puede incluir un prefijo descriptivo "user"
+ * IMPORTANTE: Los nombres de las variables corresponden a las etiquetas
+ * de los encabezados de las columnas en la tabla usuarios adoptando el
+ * formato camelCase.
  *
  * @param userId
  * @param activo
@@ -25,7 +26,7 @@ import java.time.LocalDate;
  * @param username
  * @param perfil
  */
-public record DatosDetalleUsuario(
+public record DatosListaUsuario(
         Long userId,
         Boolean activo,
         String nombre,
@@ -38,14 +39,13 @@ public record DatosDetalleUsuario(
         String telefono,
         String username,
         Perfil perfil
-) {
 
+) {
     /**
      * Método Constructor del Record
      * @param usuario
      */
-    public DatosDetalleUsuario(Usuario usuario){
-
+    public DatosListaUsuario(Usuario usuario) {
         this(
                 usuario.getId(),
                 usuario.getActivo(),
@@ -59,6 +59,7 @@ public record DatosDetalleUsuario(
                 usuario.getTelefono(),
                 usuario.getUsername(),
                 usuario.getPerfil()
+
         );
     }
 }

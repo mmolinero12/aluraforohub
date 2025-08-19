@@ -1,5 +1,7 @@
 package com.alura.forohub.domain.topico;
 
+import com.alura.forohub.domain.curso.Curso;
+import com.alura.forohub.domain.respuesta.DatosActualizacionRespuesta;
 import com.alura.forohub.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -10,52 +12,65 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-// Esta Clase Topico es en realidad la entidad JPA que se comunicará con la DB
-// @Getter, @NoArgsConstructor, @AllArgsConstructor, @EqualsAndHashCode pertenecen a Lombok
-
+/**
+ * Clase Topico: Es la entidad JPA que se comunicará con la DB
+ *
+ * @Getter, @NoArgsConstructor, @AllArgsConstructor, @EqualsAndHashCode pertenecen a Lombok
+ *
+ * IMPORTANTE: Los nombres de los atributos de la Clase Topico deben coincidir con
+ * los nombres de las columnas de la tabla topicos pero en formato Camel Case.
+ *
+ * Se prefirió el que el servidor estableciera la fecha y hora actual y NO la aplicación cliente
+ * Se requieren dos variables de fecha, una para la fecha de creación y otra para la fecha de la última actualización
+ *
+ */
 @Table(name = "topicos")
 @Entity(name = "Topico")
 @Getter                         // Crea de forma automática todos los Getters
-@NoArgsConstructor              // Método Constructor que ayuda a instanciar sin argumentos
+@NoArgsConstructor              // Método Constructor que ayuda a instanciar sin argumentos - Esto es un prerrequisito
 @AllArgsConstructor             // Método Constructor que ayuda a instanciar con todos los atributos
-@EqualsAndHashCode(of = "id_topico")   // Dos objetos de la misma clase son iguales a través del "id"
+@EqualsAndHashCode(of = "id")   // Dos objetos de la misma clase son iguales a través del campo "id" de la tabla topicos
 public class Topico {
-    // Los nombres de los atributos de la Clase Topico deben coincidir con
-    // los nombres de las columnas de la tabla topicos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_topico;
+    private Long id;
     private String titulo;
     private String mensaje;
-    private LocalDate fecha;
+    private LocalDate fechaCreacion;
+    private LocalDate fechaUltimaActualizacion;
     @Enumerated(EnumType.STRING)
     private Status status;
-    private Long id_usuario;
-    @Enumerated(EnumType.STRING)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creador_id")
+    private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "curso_id")
     private Curso curso;
 
-    public Topico(DatosRegistroTopico datosRegistroTopico) {
-        this.id_topico = null ;
-        this.titulo = datosRegistroTopico.titulo();
-        this.mensaje = datosRegistroTopico.mensaje() ;
-        this.fecha = LocalDate.parse(datosRegistroTopico.fecha());
-        this.status = datosRegistroTopico.status();
-        this.id_usuario = datosRegistroTopico.idUsuario();
-        this.curso = datosRegistroTopico.curso();
-    }
-
-
+    /**
+     * Método de actualización de la información de un topico
+     * @param datosActualizacionTopico
+     */
     public void actualizarInformaciones(@Valid DatosActualizacionTopico datosActualizacionTopico) {
         // Las siguientes líneas de código verifican que datos llegaron para su actualización
+
         if(datosActualizacionTopico.titulo() != null){
-            this.titulo = datosActualizacionTopico.titulo();
+            titulo = datosActualizacionTopico.titulo();
+            fechaUltimaActualizacion = LocalDate.now();
         }
+
         if(datosActualizacionTopico.mensaje() != null){
-            this.mensaje = datosActualizacionTopico.mensaje();
+            mensaje = datosActualizacionTopico.mensaje();
+            fechaUltimaActualizacion = LocalDate.now();
         }
+
         if(datosActualizacionTopico.status() != null){
-            this.status = datosActualizacionTopico.status();
+            status = datosActualizacionTopico.status();
+            fechaUltimaActualizacion = LocalDate.now();
         }
+
     }
 
 }
