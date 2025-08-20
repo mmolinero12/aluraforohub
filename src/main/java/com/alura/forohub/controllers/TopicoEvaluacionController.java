@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /*
@@ -33,7 +34,7 @@ public class TopicoEvaluacionController {
     @Autowired
     private TopicoRepository topicoRepository;
 
-
+    // ******************* REGISTRAR UNA NUEVA EVALUACIÓN DE TÓPICO *******************
     @Transactional
     @PostMapping
     public ResponseEntity<?> registrarTopicoEvaluacion(
@@ -67,15 +68,15 @@ public class TopicoEvaluacionController {
         TopicoEvaluacion topicoEvaluacion;
 
         // 1. Validaciones "fail-fast"
-        if (!topicoRepository.existsById(datos.topicoId())) {
+        if (!topicoExistsFlag) {
             return ResponseEntity.notFound().build();
         }
 
-        if (!usuarioRepository.existsById(datos.usuarioId())) {
+        if (!usuarioExistsFlag) {
             return ResponseEntity.notFound().build();
         }
 
-        if (topicoEvaluacionRepository.existsByUsuarioIdAndTopicoId(datos.usuarioId(), datos.topicoId())) {
+        if (topicoEvaluacionExistsFlag) {
             return ResponseEntity.badRequest().body("Ya existe una evaluación. Si desea modificarla, use la funcionalidad de actualización.");
         }
 
@@ -91,33 +92,6 @@ public class TopicoEvaluacionController {
         topicoEvaluacion = topicoEvaluacionRepository.save(topicoEvaluacion);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new DatosDetalleTopicoEvaluacion(topicoEvaluacion));
-
-        /*  Código anterior
-
-        if(!topicoExistsFlag){
-            throw new ValidacionException("No existe un tópico con el id proporcionado");
-        }
-
-        if(!usuarioExistsFlag){
-            throw new ValidacionException("No existe un usuario con el id proporcionado");
-        }
-
-        if(!topicoEvaluacionExistsFlag){
-            var usuario = usuarioRepository.findById(datos.usuarioId()).get();
-            var topico = topicoRepository.findById(datos.topicoId()).get();
-
-            topicoEvaluacion = new TopicoEvaluacion(null,
-                    datos.tipoEvaluacion(), usuario, topico);
-
-            topicoEvaluacionRepository.save(topicoEvaluacion);
-
-        } else {
-            throw new ValidacionException("Ya existe una evaluación - Si desea modificar, use la Actualización de la Evaluación");
-        }
-
-        return ResponseEntity.ok(new DatosDetalleTopicoEvaluacion(topicoEvaluacion));
-
-         */
     }
 
 
@@ -131,6 +105,7 @@ public class TopicoEvaluacionController {
 
     @Transactional
     @PutMapping
+    @PreAuthorize("hasAuthority('ROLE_USER') and @topicoSecurity.isOwner(#id)")     //Validación para que el creador elimine el registro
     public ResponseEntity<DatosDetalleTopicoEvaluacion> actualizarTopicoEvaluacion(
             @RequestBody @Valid DatosActualizacionTopicoEvaluacion datos){
         /*

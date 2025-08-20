@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /*
@@ -94,32 +95,6 @@ public class RespuestaEvaluacionController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new DatosDetalleRespuestaEvaluacion(respuestaEvaluacion));
 
-        /*  Código anterior
-
-        if(!respuestaExistsFlag){
-            throw new ValidacionException("No existe un tópico con el id proporcionado");
-        }
-
-        if(!usuarioExistsFlag){
-            throw new ValidacionException("No existe un usuario con el id proporcionado");
-        }
-
-        if(!respuestaEvaluacionExistsFlag){
-            var usuario = usuarioRepository.findById(datos.usuarioId()).get();
-            var respuesta = respuestaRepository.findById(datos.respuestaId()).get();
-
-            respuestaEvaluacion = new RespuestaEvaluacion(null,
-                    datos.tipoEvaluacion(), usuario, respuesta);
-
-            respuestaEvaluacionRepository.save(respuestaEvaluacion);
-
-        } else {
-            throw new ValidacionException("Ya existe una evaluación - Si desea modificar, use la Actualización de la Evaluación");
-        }
-
-        return ResponseEntity.ok(new DatosDetalleRespuestaEvaluacion(respuestaEvaluacion));
-
-         */
     }
 
 
@@ -133,6 +108,7 @@ public class RespuestaEvaluacionController {
 
     @Transactional
     @PutMapping
+    @PreAuthorize("hasAuthority('ROLE_USER') and @topicoSecurity.isOwner(#id)")     //Validación para que el creador elimine el registro
     public ResponseEntity<DatosDetalleRespuestaEvaluacion> actualizarRespuestaEvaluacion(
             @RequestBody @Valid DatosActualizacionRespuestaEvaluacion datos){
         /*

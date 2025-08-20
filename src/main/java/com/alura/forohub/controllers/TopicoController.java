@@ -4,6 +4,7 @@ import com.alura.forohub.domain.ValidacionException;
 import com.alura.forohub.domain.curso.Categoria;
 import com.alura.forohub.domain.curso.CursoRepository;
 import com.alura.forohub.domain.topico.*;
+import com.alura.forohub.domain.usuario.Usuario;
 import com.alura.forohub.domain.usuario.UsuarioRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
@@ -15,10 +16,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -43,26 +48,59 @@ public class TopicoController {
     // ******************* REGISTRAR UN NUEVO TÓPICO *******************
     @Transactional
     @PostMapping
-    public ResponseEntity registrarTopico(
-            @RequestBody @Valid DatosRegistroTopico datos){
+    public ResponseEntity<?> registrarTopico(
+            @RequestBody @Valid DatosRegistroTopico datos,
+            UriComponentsBuilder uriComponentsBuilder,
+            Authentication authentication) { // Se inyecta el objeto Authentication
 
-        if(!creadorRepository.existsById(datos.creadorId())){
-            throw new ValidacionException("No existe un usuario con el id proporcionado");
+        // Usar ResponseEntity<?> (conocido como wildcard) es la solución más limpia y recomendada. Le indica a
+        // Spring que el método puede devolver un ResponseEntity que contiene cualquier tipo de objeto en su
+        // cuerpo (<String>, <DatosDetalleTopico>, etc.). Esto te permite manejar diferentes tipos de
+        // respuestas (éxito con un DTO y error con un mensaje de texto) dentro del mismo método.
+
+        /*
+         * 1. Manejo de "Existencia" (if (topicoEvaluacionRepository.exists...)): Usamos el "early return" para
+         * manejar el caso de que la evaluación ya exista. Si es así, devolvemos un ResponseEntity.badRequest()
+         * (código HTTP 400) con un mensaje claro, lo cual es más apropiado que un error de tipo NOT_FOUND y es
+         * una buena práctica para indicar que la solicitud del cliente no es válida.
+         * 2. Optional para findById: El método findById devuelve un Optional. Al usar .orElseThrow(...),
+         * te aseguras de obtener el objeto o lanzar una excepción, evitando el uso de .get() que puede causar
+         * una NoSuchElementException si el objeto no se encuentra. Aunque ya validamos la existencia al principio,
+         *  usar orElseThrow es una práctica más robusta y segura.
+         * 3. Manejo del return final: Ahora, la creación del objeto topicoEvaluacion ocurre solo después de todas
+         * las validaciones exitosas. Así, siempre que la lógica de negocio se ejecute, el objeto estará inicializado
+         * y el return será seguro.
+         * 4. Código de Estado CREATED: Para una operación POST (creación de un recurso), es una buena práctica
+         * devolver un código de estado 201 (CREATED) en lugar de 200 (OK). Esto informa al cliente que un nuevo
+         * recurso se ha creado exitosamente. Lo logramos con ResponseEntity.status(HttpStatus.CREATED).
+         *
+         */
+
+        // Obtener el objeto del usuario autenticado
+        var creador = (Usuario) authentication.getPrincipal();
+        var cursoExistsFlag = cursoRepository.existsById(datos.cursoId());
+        Topico topico;
+
+        // 1. Validaciones "fail-fast"
+
+        if(!cursoExistsFlag){
+            return ResponseEntity.notFound().build();
         }
 
-        if(!cursoRepository.existsById(datos.cursoId())){
-            throw new ValidacionException("No existe un curso con el id proporcionado");
-        }
-
-        var creador = creadorRepository.findById(datos.creadorId()).get();
-        var curso = cursoRepository.findById(datos.cursoId()).get();
+        // 2. Lógica de negocio principal
+        var curso = cursoRepository.findById(datos.cursoId()).orElseThrow(
+                () -> new ValidacionException("Curso no encontrado"));
 
         var fechaCreacion = LocalDate.now();
+        topico =  new Topico(null, datos.titulo(), datos.mensaje(), fechaCreacion,
+                fechaCreacion, creador, curso);
 
-        var topico = new Topico(null, datos.titulo(), datos.mensaje(),fechaCreacion, fechaCreacion, Status.ABIERTO, creador, curso);
-        topicoRepository.save(topico);     //Registrar en la DB. con .save(), automáticamente topico contiene su id
+        // 3. Persistir y devolver
+        topico = topicoRepository.save(topico); //Registrar en la DB. con .save(), automáticamente topico genera su id
 
-        return ResponseEntity.ok(new DatosDetalleTopico(topico));
+        URI uri = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DatosDetalleTopico(topico));
+
     }
 
     // ******************* LISTAR TÓPICOS *******************

@@ -63,12 +63,12 @@ public class Topico {
     private List<TopicoEvaluacion> topicoEvaluaciones;
 
     public Topico( Long id, String titulo, String mensaje, LocalDate fechaCreacion,
-                   LocalDate fechaUltimaActualizacion, Status status, Usuario usuario, Curso curso) {
+                   LocalDate fechaUltimaActualizacion, Usuario usuario, Curso curso) {
         this.titulo = titulo;
         this.mensaje = mensaje;
         this.fechaCreacion = fechaCreacion;
         this.fechaUltimaActualizacion = fechaUltimaActualizacion;
-        this.status = status;
+        this.status = Status.ABIERTO;
         this.usuario = usuario;
         this.curso = curso;
     }

@@ -1,0 +1,941 @@
+type: collection.insomnia.rest/5.0
+name: Requests Foro Hub
+meta:
+  id: wrk_123f662bcadc4b058cfa4e8f2f9c1af1
+  created: 1752530635461
+  modified: 1753114924327
+  description: ""
+collection:
+  - name: Challenge Foro Hub
+    meta:
+      id: fld_59984ce356804af987d18f24c0a8761c
+      created: 1753398902851
+      modified: 1755447208266
+      sortKey: -1753398902851
+      description: ""
+    children:
+      - name: Tópicos
+        meta:
+          id: fld_0168d52b9bdb4469b611cffc90688a4a
+          created: 1753141455876
+          modified: 1753398959362
+          sortKey: -1753398915656
+          description: ""
+        children:
+          - url: http://localhost:8080/topicos?sort=titulo,asc&size=2&page=1
+            name: Listar Tópicos Control desde el URL
+            meta:
+              id: req_82dd51f640f5494695bed5239182decf
+              created: 1752530660776
+              modified: 1755108799229
+              isPrivate: false
+              description: ""
+              sortKey: -1753141465777
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+              disabled: false
+              prefix: ""
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/topicos
+            name: Publicar Tópico
+            meta:
+              id: req_72b7d2379f0043ad966c434eaf93d5e8
+              created: 1752538654883
+              modified: 1755647787779
+              isPrivate: false
+              description: ""
+              sortKey: -1753141466077
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"titulo": "Creo que estoy loco 33",
+                	"mensaje": "Hola mundo 33",	
+                	"cursoId": "4"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/topicos?page=1
+            name: Listar Tópicos Control desde el Back
+            meta:
+              id: req_aa21c3f0b63c4dc5af4b2c116f2e933c
+              created: 1752931251774
+              modified: 1754674879574
+              isPrivate: false
+              description: ""
+              sortKey: -1753141465677
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/topicos
+            name: Actualizar Tópico
+            meta:
+              id: req_9f363a00471f4aac8aea443b8486f36e
+              created: 1752933716161
+              modified: 1754355199700
+              isPrivate: false
+              description: ""
+              sortKey: -1753141465627
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                { 
+                	"topicId": 2,	
+                	"titulo": "Error 505 - Carga de datos",
+                	"*mensaje": "Tuve un error con el código xxxxyyyyzzzz2",
+                	"status": "REVISION"	
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/topicos/1
+            name: Eliminación Tópico
+            meta:
+              id: req_93bd74a5f2ca4d5d9df37a7235b01f10
+              created: 1753051680496
+              modified: 1755629011817
+              isPrivate: false
+              description: ""
+              sortKey: -1753141465577
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/topicos/3
+            name: Listar Tópico
+            meta:
+              id: req_8aa00a4419a746d987bfd6ecc364cd7b
+              created: 1753055310927
+              modified: 1755559408095
+              isPrivate: false
+              description: ""
+              sortKey: -1753141465652
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+              prefix: ""
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/topicos?page=0
+            name: Listar Tópicos Control desde el Back con Client JSON
+            meta:
+              id: req_c6242d2111d14a5f948d6573ab3d49f8
+              created: 1755108872078
+              modified: 1755566785066
+              isPrivate: false
+              description: ""
+              sortKey: -1753141465664.5
+            method: GET
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "criteriosDeBusqueda": {
+                    "*username": "meztlimolinero",
+                		"*nombreCurso": "Spring Boot 1: Herbolaria",
+                		"*fechaCreacion": "2025-08-18",
+                		"*categoria": "PROGRAMACIÓN_FRONT_END"
+                				
+                  },
+                  "ordenamiento": {
+                    "*campo": "username",
+                		"**campo": "nombreCurso",
+                		"***campo": "fechaCreacion",
+                		"campo": "categoria",
+                				
+                    "direccionOrdenacion": "DESC" 
+                  }
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Usuarios
+        meta:
+          id: fld_505a2377a8564d0caffd888eb703beb1
+          created: 1753141506289
+          modified: 1754921462165
+          sortKey: -1754007970910.5
+          description: ""
+        children:
+          - url: http://localhost:8080/usuarios
+            name: Registrar Usuario
+            meta:
+              id: req_10322c7f425b485faf55de068da81c5c
+              created: 1753141625829
+              modified: 1755645617212
+              isPrivate: false
+              description: ""
+              sortKey: -1753141860194
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"nombre": "Meztli",
+                	"apellidoPaterno": "Vega",
+                	"apellidoMaterno": "Ciprés",
+                	"fechaNacimiento": "2018-12-17",
+                	"genero": "Femenino",
+                	"direccion": {
+                	  "calle": "Avenida Montevideo",
+                	  "numero": "167",
+                	  "colonia": "Lindavista",
+                	  "codigoPostal": "07809",
+                	  "ciudad": "Playa del Carmen",
+                	  "estado": "Quintana Roo"	
+                	},
+                	"email": "meztli@gmail.com",
+                	"telefono": "(335) 786-3389",
+                	"username": "meztlivega",
+                	"password": "Oshito5612%",
+                	"perfil": "ADMINISTRADOR"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/usuarios?page=0
+            name: Listar Usuarios Control desde el Back
+            meta:
+              id: req_283f11c4f942441197ed8943a9bfcc60
+              created: 1753141669723
+              modified: 1755589886261
+              isPrivate: false
+              description: ""
+              sortKey: -1753141860094
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/usuarios/2
+            name: Listar Usuario
+            meta:
+              id: req_c7b650923591488b81fa8ec31bf62648
+              created: 1753141686870
+              modified: 1755587732676
+              isPrivate: false
+              description: ""
+              sortKey: -1753141859994
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/usuarios
+            name: Actualizar Usuario
+            meta:
+              id: req_69c5f8b09554420bb5e2c792f124855f
+              created: 1753141736189
+              modified: 1755092194823
+              isPrivate: false
+              description: ""
+              sortKey: -1753141859894
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                { 
+                	"userId": 1,	
+                	"*password": "Oshita07%",	
+                	"*telefono": "(56) 5392-5555",
+                	"*activo": "false",
+                	"perfil": "ADMINISTRADOR",
+                	"direccion": {
+                		"calle": "Hay Dolor",
+                		"numero": "77",
+                		"*colonia": "Progreso Nacional",
+                		"*codigoPostal": "07600",
+                		"*ciudad": "CDMX",
+                		"*estado": "CDMX"
+                	}
+                	
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/usuarios/5
+            name: Eliminación Usuario
+            meta:
+              id: req_9391bd30c29b4d45b21dca84a69af5d9
+              created: 1753141812348
+              modified: 1755092389880
+              isPrivate: false
+              description: ""
+              sortKey: -1753141859794
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Respuestas
+        meta:
+          id: fld_6cb6e01d7926409eaa544518bd4f3a3a
+          created: 1753277879852
+          modified: 1753398927303
+          sortKey: -1753398915456
+          description: ""
+        children:
+          - url: http://localhost:8080/respuestas
+            name: Publicar Respuesta
+            meta:
+              id: req_f66fd0816a99411abb10b6cc11b39708
+              created: 1753277899696
+              modified: 1755649837116
+              isPrivate: false
+              description: ""
+              sortKey: -1753277909859
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"mensaje": "Felicidades 77",	
+                	"topicId": "4"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/respuestas?page=0
+            name: Listar Respuestas Control desde el Back
+            meta:
+              id: req_9f122587ecf8436f89f301f4d3648beb
+              created: 1753277936567
+              modified: 1754931501900
+              isPrivate: false
+              description: ""
+              sortKey: -1753277909759
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/respuestas/2
+            name: Listar Respuesta
+            meta:
+              id: req_4587b8ddafe74c68a12b734908dfe756
+              created: 1753277964759
+              modified: 1753977885603
+              isPrivate: false
+              description: ""
+              sortKey: -1753277909659
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/respuestas
+            name: Actualizar Respuesta
+            meta:
+              id: req_0918ea5d28644af68a3f808214b7e30f
+              created: 1753277992619
+              modified: 1753977835468
+              isPrivate: false
+              description: ""
+              sortKey: -1753277909559
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                { 
+                	"id_respuesta": 2,	
+                	"mensaje": "Update and Reboot 3",
+                	"fecha": "2025-07-23"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/respuestas/1
+            name: Eliminación Respuesta
+            meta:
+              id: req_67931cba811c4bf0a4573ae03010fe36
+              created: 1753278017562
+              modified: 1755583457093
+              isPrivate: false
+              description: ""
+              sortKey: -1753277909459
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Cursos
+        meta:
+          id: fld_ac8a6615b5074c37bff5d7653112b6d3
+          created: 1754617026165
+          modified: 1754617026165
+          sortKey: -1754617026165
+          description: ""
+        children:
+          - url: http://localhost:8080/cursos
+            name: Registrar Curso
+            meta:
+              id: req_842791c3ab2a45b6ad2548e4f86056eb
+              created: 1754617033003
+              modified: 1755645836351
+              isPrivate: false
+              description: ""
+              sortKey: -1754617033103
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"nombre": "Spring Boot 8: Biología",
+                	"categoria": "PROGRAMACIÓN_FRONT_END"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Topico Evaluación
+        meta:
+          id: fld_9764323061ca403a8c63d011f576a945
+          created: 1754921447762
+          modified: 1755583820508
+          sortKey: -1753398915424.75
+          description: ""
+        children:
+          - url: http://localhost:8080/topicoevaluaciones
+            name: Registrar Nueva Evaluación Tópico
+            meta:
+              id: req_18b3269a6805430d8a502f1e04c62dbd
+              created: 1754932260791
+              modified: 1755579941128
+              isPrivate: false
+              description: ""
+              sortKey: -1754932260791
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"tipoEvaluacion": "LIKE",
+                	"usuarioId": 1,
+                	"topicoId": 1
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/topicoevaluaciones
+            name: Actualizar Evaluación Tópico
+            meta:
+              id: req_b45e90aa71864ad189be13717b740947
+              created: 1755577009996
+              modified: 1755579934614
+              isPrivate: false
+              description: ""
+              sortKey: -1754774646947
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"tipoEvaluacion": "DISLIKE",
+                	"usuarioId": 1,
+                	"topicoId": 3
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/topicoevaluaciones?page=2
+            name: Listar Evaluaciones de Tópicos Control desde el Back
+            meta:
+              id: req_88eb48703e994e739b425b0f8558f54c
+              created: 1755579857682
+              modified: 1755580403741
+              isPrivate: false
+              description: ""
+              sortKey: -1754853453869
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/topicoevaluaciones/3
+            name: Listar Evaluación de Tópico
+            meta:
+              id: req_cec8aaa8db0049c8b6f753e54a74dde6
+              created: 1755580577841
+              modified: 1755580608545
+              isPrivate: false
+              description: ""
+              sortKey: -1754814050408
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/topicoevaluaciones/3
+            name: Eliminación Evaluación Tópico
+            meta:
+              id: req_15fa2399de294dc6855fa7089367ddb6
+              created: 1755580647336
+              modified: 1755580699120
+              isPrivate: false
+              description: ""
+              sortKey: -1754774646847
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Respuesta Evaluación
+        meta:
+          id: fld_bb566b455a6a490b86617f2cdfa706dc
+          created: 1755582726452
+          modified: 1755582726452
+          sortKey: -1753398915393.5
+          description: ""
+        children:
+          - url: http://localhost:8080/respuestaevaluaciones
+            name: Registrar Nueva Evaluación Respuesta
+            meta:
+              id: req_83773a5b20ca496486e2a5ef40f534a9
+              created: 1755582726455
+              modified: 1755585242228
+              isPrivate: false
+              description: ""
+              sortKey: -1754932260791
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"tipoEvaluacion": "DISLIKE",
+                	"usuarioId": 1,
+                	"respuestaId": 5
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/respuestaevaluaciones
+            name: Actualizar Evaluación Respuesta
+            meta:
+              id: req_b2e9640956c84de1849efeeb39ee8ab0
+              created: 1755582726457
+              modified: 1755585322461
+              isPrivate: false
+              description: ""
+              sortKey: -1754774646947
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"tipoEvaluacion": "DISLIKE",
+                	"usuarioId": 1,
+                	"respuestaId": 1
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/respuestaevaluaciones?page=2
+            name: Listar Evaluaciones de Respuestas Control desde el Back
+            meta:
+              id: req_3de6e78cacfb4afe92151e409c864a41
+              created: 1755582726459
+              modified: 1755585294734
+              isPrivate: false
+              description: ""
+              sortKey: -1754853453869
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/respuestaevaluaciones/3
+            name: Listar Evaluación de Respuesta
+            meta:
+              id: req_a2e47cc3098849d6b7fb816a3dbc66ae
+              created: 1755582726461
+              modified: 1755583910388
+              isPrivate: false
+              description: ""
+              sortKey: -1754814050408
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://localhost:8080/respuestaevaluaciones/3
+            name: Eliminación Evaluación Respuesta
+            meta:
+              id: req_9eafdbad1c724793b124a1c72898f834
+              created: 1755582726463
+              modified: 1755583969088
+              isPrivate: false
+              description: ""
+              sortKey: -1754774646847
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.bearer }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - url: http://localhost:8080/login
+        name: Iniciar Sesión
+        meta:
+          id: req_c67240ddfbc9495b9670c1a23bc532d9
+          created: 1753374641822
+          modified: 1755646425891
+          isPrivate: false
+          description: ""
+          sortKey: -1753398915356
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"username": "yalicipres", 
+            	"*password": "Ard1ll1t4%",
+            	"password": "Oshito5612%"
+            	
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_b1ad7b878101d19d4fd03c2aaddfecb84da94955
+    created: 1752530635500
+    modified: 1752530635500
+environments:
+  name: Base Environment
+  meta:
+    id: env_b1ad7b878101d19d4fd03c2aaddfecb84da94955
+    created: 1752530635475
+    modified: 1753398832500
+    isPrivate: false

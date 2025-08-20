@@ -56,15 +56,16 @@ public class Respuesta {
     @OneToMany(mappedBy = "respuesta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RespuestaEvaluacion> respuestaEvaluaciones;
 
+
     public Respuesta(Long id, String mensaje, Usuario usuario, Topico topico, LocalDate fechaCreacion,
-                     LocalDate fechaUltimaActualizacion, Boolean solucion) {
+                     LocalDate fechaUltimaActualizacion) {
         this.id = id;
         this.mensaje = mensaje;
         this.usuario = usuario;
         this.topico = topico;
         this.fechaCreacion = fechaCreacion;
         this.fechaUltimaActualizacion = fechaUltimaActualizacion;
-        this.solucion = solucion;
+        this.solucion = false;
     }
 
     /**

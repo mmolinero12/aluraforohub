@@ -13,7 +13,6 @@ public record DatosRegistroRespuesta(
         // del Json que se recibe
         // @NotBlank es específico de String
         @NotBlank (message = "Mensaje es obligatorio") String mensaje,
-        @NotNull (message = "Id de usuario es obligatorio") Long creadorId,
         @NotNull (message = "Id de topico es obligatorio") Long topicId
 
 ) {

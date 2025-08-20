@@ -17,7 +17,6 @@ public record DatosRegistroTopico(
         // @NotBlank es específico de String
         @NotBlank (message = "Título es obligatorio") String titulo,
         @NotBlank (message = "Mensaje es obligatorio") String mensaje,
-        @NotNull (message = "Id de usuario es obligatorio") Long creadorId,
         @NotNull (message = "Curso es obligatorio") Long cursoId
 
 ) {
